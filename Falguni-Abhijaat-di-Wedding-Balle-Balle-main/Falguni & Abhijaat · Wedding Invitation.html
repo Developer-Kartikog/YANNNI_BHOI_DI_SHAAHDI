@@ -11,7 +11,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#f7f0e1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🪔%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;600&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;600&family=Jost:wght@400;500;600;700&display=swap">
 <style>
 :root{--bg:#f7f0e1;--card:#fffaf0;--ink:#2b1d16;--soft:#6b574a;--gold:#a8802f;--gold2:#d4b061;--maroon:#6e1f2b;--green:#24402f;--line:rgba(168,128,47,.45);
 --serif:'Cormorant Garamond','Times New Roman',serif;--hi:'Tiro Devanagari Hindi','Noto Serif Devanagari',serif;--sans:'Jost',system-ui,sans-serif;
@@ -125,6 +125,58 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
 .rv{opacity:0;transform:translateY(18px);transition:.8s}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}.dots{display:none}}
+/* ===== Upgrade: dates, 50th, ceremony label, event cards, collage, petals, sound ===== */
+/* dates */
+.date{font-weight:700;color:var(--maroon);padding:0 .2em;border-radius:3px;background:linear-gradient(transparent 58%,rgba(212,176,97,.42) 0);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hi .date{font-family:'Noto Serif Devanagari',var(--hi);font-weight:600}
+.tab small{font-weight:600}
+/* 50th + ceremony label */
+.fifty{font-weight:700;font-size:1.22em;color:var(--maroon);padding:0 .08em;text-decoration:underline;text-decoration-color:var(--gold2);text-decoration-thickness:2px;text-underline-offset:.18em}
+.ev .cer{display:inline-block;margin:10px 0 2px;padding:2px 16px;border:1px solid var(--gold);border-radius:999px;background:rgba(212,176,97,.16);color:var(--maroon);font-size:1.3rem}
+/* invitation-card images inside event cards */
+.evtxt{min-width:0}
+.ev.has-img{display:grid;gap:18px;align-items:center}
+.evimgs{display:flex;gap:12px;justify-content:center;align-items:flex-start}
+.evimg{display:block;flex:0 1 200px;min-width:0;line-height:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);box-shadow:0 8px 20px rgba(80,50,20,.16);transition:transform .3s,box-shadow .3s}
+.evimg:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(80,50,20,.22)}
+.evimg img{display:block;width:100%;height:auto;object-fit:contain}
+@media(min-width:640px){.ev.has-img:not(.multi){grid-template-columns:minmax(0,1fr) 220px}.ev.multi .evimg{flex-basis:210px}}
+/* LUBBY & BUBBY collage */
+.collage{--a:60%;--b:36%;--c:36%;--d:60%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px 3%;max-width:720px;margin:0 auto}
+.collage[data-layout="2"]{--a:52%;--b:44%;--c:44%;--d:52%}
+.collage[data-layout="3"]{--a:64%;--b:32%;--c:32%;--d:64%}
+.collage figure{margin:0;width:var(--w,50%);padding:7px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 26px rgba(80,50,20,.14);transform:translateY(var(--y,0)) rotate(var(--r,0deg));transition:transform .35s ease,box-shadow .35s ease}
+.collage figure:nth-child(1){--w:var(--a)}.collage figure:nth-child(2){--w:var(--b)}.collage figure:nth-child(3){--w:var(--c)}.collage figure:nth-child(4){--w:var(--d)}
+.collage img{display:block;width:100%;height:auto;border-radius:8px}
+.collage figure:hover{transform:translateY(0) rotate(0deg) scale(1.03);box-shadow:0 16px 34px rgba(80,50,20,.24);position:relative;z-index:1}
+@media(min-width:700px){
+  .collage{--a:44%;--b:30%;--c:30%;--d:40%}
+  .collage[data-layout="2"]{--a:32%;--b:42%;--c:42%;--d:32%}
+  .collage[data-layout="3"]{--a:38%;--b:34%;--c:34%;--d:44%}
+}
+/* falling petals: hero + RSVP layers only */
+#top,#rsvp{position:relative}
+#top>:not(.petals),#rsvp>:not(.petals){position:relative;z-index:1}
+.petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.pt{position:absolute;top:0;left:var(--x);opacity:0;will-change:transform,opacity;animation:petal-drop var(--dur) linear var(--dl) both}
+.pt i{display:block;width:var(--s);height:var(--h);animation:petal-flutter var(--fl) ease-in-out infinite alternate}
+.pt.p i{border-radius:0 100% 0 100%;background:linear-gradient(135deg,var(--g1),var(--g2));box-shadow:inset -2px -2px 4px rgba(0,0,0,.1)}
+.pt.b i{background:var(--bl) center/contain no-repeat}
+.c1{--g1:#ffc247;--g2:#f08a0c}.c2{--g1:#f9b9c9;--g2:#dc5d82}.c3{--g1:#fff4e8;--g2:#f1c7b0}.c4{--g1:#d86a78;--g2:#8f2438}.c5{--g1:#f3dc9c;--g2:#c79a3a}
+.b1{--bl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%23f4a6b8' stroke='%23d9577a' stroke-width='.6'%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(72 20 20)'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(144 20 20)'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(216 20 20)'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(288 20 20)'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='3.6' fill='%23f3c64b'/%3E%3C/svg%3E")}
+.b2{--bl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%23ffb52e' stroke='%23e8830c' stroke-width='.6'%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(72 20 20)'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(144 20 20)'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(216 20 20)'/%3E%3Cellipse cx='20' cy='9.5' rx='6.5' ry='8.5' transform='rotate(288 20 20)'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='3.6' fill='%23a8541a'/%3E%3C/svg%3E")}
+.pt.still{animation:none;opacity:.55;top:var(--y)}
+.pt.still i{animation:none;transform:rotate(var(--r0))}
+@keyframes petal-drop{0%{transform:translate3d(0,-40px,0);opacity:0}8%{opacity:var(--o)}90%{opacity:var(--o)}100%{transform:translate3d(var(--dx),var(--fall),0);opacity:0}}
+@keyframes petal-flutter{from{transform:translateX(calc(var(--sw)*-1)) rotate(var(--r0)) perspective(180px) rotateY(0deg)}to{transform:translateX(var(--sw)) rotate(calc(var(--r0) + var(--rs))) perspective(180px) rotateY(70deg)}}
+/* sound toggle */
+#snd{position:fixed;z-index:150;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;min-height:48px;min-width:48px;padding:0 14px;justify-content:center;border-radius:999px;border:1px solid var(--gold);background:var(--card);color:var(--ink);font:500 .85rem var(--sans);cursor:pointer;box-shadow:0 6px 18px rgba(80,50,20,.18)}
+#snd[aria-pressed="true"]{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#2b1d16;border-color:transparent}
+#snd[hidden]{display:none}
+.snd-i{font-size:1.15rem;line-height:1}
+.snd-t{display:none}
+@media(min-width:600px){.snd-t{display:inline}#snd{padding:0 18px}}
+@media (prefers-reduced-motion:reduce){.collage figure:hover{transform:translateY(var(--y,0)) rotate(var(--r,0deg))}.evimg:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -139,26 +191,27 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
     <div class="hi om">!! श्री गणेशाय नमः !!</div>
     <div class="hi" style="font-size:1.9rem;color:var(--maroon)">शुभ विवाह</div>
     <h1 class="names">Falguni &amp; Abhijaat</h1>
-    <p class="dates">23 · 24 · 25 November 2026</p>
+    <p class="dates"><span class="date">23 · 24 · 25 November 2026</span></p>
     <p class="hi" style="margin:4px 0 22px;color:var(--soft)">श्री निमंत्रण</p>
     <button class="btn fill" id="open" type="button">Open Wedding Invitation</button>
   </div>
 </div>
 
 <nav aria-label="Sections"><ul>
-  <li><a href="#top">Home</a></li><li><a href="#countdown">Countdown</a></li><li><a href="#invitation">Invitation</a></li>
+  <li><a href="#top">Home</a></li><li><a href="#countdown">Countdown</a></li><li><a href="#invitation">Invitation</a></li><li><a href="#lubby">Gallery</a></li>
   <li><a href="#programme">Programme</a></li><li><a href="#venues">Venues</a></li><li><a href="#hindi">निमंत्रण</a></li><li><a href="#rsvp">RSVP</a></li>
 </ul></nav>
 
 <main>
 <section id="top">
+  <div class="petals" id="petalsHero" aria-hidden="true"></div>
   <div>
     <p class="eyebrow">शुभ विवाह · The Wedding Of</p>
     <h1>Falguni <em>&amp;</em> Abhijaat</h1>
     <p class="hi" style="font-size:1.4rem;margin:6px 0">फाल्गुनी (यानी) परिणय अभिजात</p>
     <p class="tag">Two Families. One Beautiful Beginning.</p>
     <div class="sep">✦</div>
-    <p class="dates">23 – 25 November 2026</p>
+    <p class="dates"><span class="date">23 – 25 November 2026</span></p>
     <p class="dates" style="font-size:.8rem;color:var(--soft)">Agra</p>
     <div class="row" style="margin-top:28px"><a class="btn fill" href="#programme">View the Programme</a><button class="btn" type="button" data-share>Share Invitation</button></div>
   </div>
@@ -172,7 +225,7 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
     <div><b id="d">0</b><small>Days</small></div><div><b id="h">0</b><small>Hours</small></div>
     <div><b id="m">0</b><small>Minutes</small></div><div><b id="s">0</b><small>Seconds</small></div>
   </div>
-  <p class="note" id="cdnote">Tuesday, 24 November 2026 · 7:00 PM IST. The card does not state a separate ceremony time, so we count to the Swagat Baraat.</p>
+  <span class="date">Tuesday, 24 November 2026</span> · 7:00 PM IST.
 </section>
 
 <section class="wrap rv" id="invitation">
@@ -196,6 +249,18 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
   </div>
 </section>
 
+<section class="wrap rv" id="lubby">
+  <p class="eyebrow">Moments Together</p>
+  <h2>Lubby &amp; Bubby</h2>
+  <div class="sep">✦</div>
+  <div class="collage" id="collage">
+    <figure><img src="img/lubby_bubby1.jpeg" width="1024" height="1280" loading="lazy" decoding="async" alt="Falguni and Abhijaat in matching pastel green and lilac outfits, posed on a rooftop terrace and holding hands on a garden path"></figure>
+    <figure><img src="img/lubby_bubby2.jpeg" width="1024" height="1280" loading="lazy" decoding="async" alt="Abhijaat standing and Falguni seated on a terrace ledge beside a frangipani tree"></figure>
+    <figure><img src="img/lubby_bubby3.jpeg" width="1024" height="1280" loading="lazy" decoding="async" alt="Album page of the couple walking hand in hand, a close portrait together, and the words Together Forever"></figure>
+    <figure><img src="img/lubby_bubby4.jpeg" width="1024" height="1280" loading="lazy" decoding="async" alt="Album page of the couple embracing beside a railing, a portrait of Falguni, and a text panel reading In Your Arms"></figure>
+  </div>
+</section>
+
 <section class="wrap rv" id="programme">
   <p class="eyebrow">मांगलिक कार्यक्रम</p>
   <h2>Wedding Programme</h2>
@@ -203,6 +268,50 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
   <div class="tabs" role="tablist" aria-label="Choose a day"></div>
   <div id="panel" role="tabpanel" tabindex="0"></div>
 </section>
+
+
+
+<!-- Wedding Invitation PDF -->
+<section class="wrap rv" id="pdf-invitation">
+  <p class="eyebrow">The Complete Invitation</p>
+  <h2>Wedding Invitation PDF</h2>
+  <div class="sep">✦</div>
+
+  <div class="card">
+    <iframe
+      src="/wedding-invitation.pdf#view=FitH"
+      title="Falguni and Abhijaat Wedding Invitation"
+      width="100%"
+      height="700"
+      loading="lazy"
+      style="display:block;width:100%;height:min(80vh,900px);min-height:500px;border:1px solid var(--line);border-radius:12px;background:#fff;"
+    >
+      Your browser cannot display this PDF.
+      <a href="/wedding-invitation.pdf">Open the wedding invitation PDF</a>
+    </iframe>
+
+    <div class="row" style="margin-top:20px">
+      <a
+        class="btn fill"
+        href="/wedding-invitation.pdf"
+        target="_blank"
+        rel="noopener"
+      >
+        View Full PDF
+      </a>
+
+      <a
+        class="btn"
+        href="/wedding-invitation.pdf"
+        download="Falguni-and-Abhijaat-Wedding-Invitation.pdf"
+      >
+        Download Invitation
+      </a>
+    </div>
+  </div>
+</section>
+<!-- End Wedding Invitation PDF -->
+
 
 <section class="wrap rv" id="venues">
   <p class="eyebrow">Where to Find Us</p>
@@ -231,6 +340,7 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
 </section>
 
 <section class="wrap rv" id="rsvp">
+  <div class="petals" id="petalsRsvp" aria-hidden="true"></div>
   <p class="eyebrow">Optional</p>
   <h2>Let Us Know</h2>
   <div class="sep">✦</div>
@@ -250,7 +360,7 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
   <div class="sep">✦</div>
   <p class="tag">“With the blessings of our families, two hearts begin a beautiful new chapter.”</p>
   <h2 style="margin-top:20px">Falguni &amp; Abhijaat</h2>
-  <p class="dates" style="margin-top:10px">23 – 25 November 2026 · Agra</p>
+  <p class="dates" style="margin-top:10px"><span class="date">23 – 25 November 2026</span> · Agra</p>
   <div class="row" style="margin-top:26px">
     <button class="btn fill" type="button" data-share>Share</button>
     <button class="btn" type="button" id="copy">Copy Link</button>
@@ -258,30 +368,182 @@ footer .tag{font-size:clamp(1.4rem,5vw,2rem);max-width:640px;margin:10px auto}
   </div>
   <p class="note">शुभ विवाह · श्री निमंत्रण</p>
 </footer>
+<button id="snd" type="button" aria-pressed="false" title="Turn sound on"><span class="snd-i" aria-hidden="true">🔇</span><span class="snd-t">Sound</span></button>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
 /* ---------- Central configuration (all content from the printed card) ---------- */
-const CFG={
-  tz:'+05:30',
-  countdown:{label:'Swagat Baraat',iso:'2026-11-24T19:00:00+05:30'},
-  host:'919837071785',
-  venues:{
-    raman:{role:'Evening function · 23 November',en:'Shri Raman Vatika',hi:'श्री रमन वाटिका',addr:'Kamla Nagar, Agra',addrHi:'कमला नगर, आगरा',q:'Shri Raman Vatika, Kamla Nagar, Agra'},
-    ram:{role:'Wedding venue · विवाह स्थल',en:'Shri Ram Farm House',hi:'श्रीराम फार्म हाउस',addr:'Poiya Ghat Road, Dayalbagh, Agra',addrHi:'पोईया घाट रोड, दयालबाग, आगरा',q:'Shri Ram Farm House, Poiya Ghat Road, Dayalbagh, Agra'},
-    home:{role:'Family residence · निज निवास',en:'Nij Nivas',hi:'निज निवास',addr:'5, Basant Awas, Mughal Road, Agra',addrHi:'5, बसन्त आवास, मुगल रोड, आगरा',q:'5 Basant Awas, Mughal Road, Agra'}
+
+
+const CFG = {
+  tz: '+05:30',
+
+  countdown: {
+    label: 'Swagat Baraat',
+    iso: '2026-11-24T19:00:00+05:30'
   },
-  days:[
-    {d:'23',dow:'Monday',date:'2026-11-23',dowHi:'सोमवार, 23 नवम्बर 2026',events:[
-      {id:'haldi',en:'Haldi & Mehndi Ceremony',hi:'हल्दी और मेंहदी समारोह',time:'10:00 AM – 2:00 PM',hiTime:'प्रातः 10 से 2 बजे तक',s:'2026-11-23T10:00:00+05:30',e:'2026-11-23T14:00:00+05:30',venue:null},
-      {id:'anniv',note:true},
-      {id:'sangeet',en:'Mahila Sangeet & Preetibhoj',hi:'महिला संगीत एवं प्रीतिभोज',time:'6:00 PM',hiTime:'सायं 6.00 बजे',s:'2026-11-23T18:00:00+05:30',venue:'raman'}]},
-    {d:'24',dow:'Tuesday',date:'2026-11-24',dowHi:'मंगलवार, 24 नवम्बर 2026',events:[
-      {id:'baraat',en:'Swagat Baraat & Preetibhoj',hi:'स्वागत बारात एवं प्रीतिभोज',time:'7:00 PM',hiTime:'सायं 7.00 बजे',s:'2026-11-24T19:00:00+05:30',venue:'ram'}]},
-    {d:'25',dow:'Wednesday',date:'2026-11-25',dowHi:'बुधवार, 25 नवम्बर 2026',events:[
-      {id:'palkein',en:'Bheegi Palkein',hi:'भीगी पलकें',time:'Morning · time not specified on the card',hiTime:'प्रातः बेला',allDay:true,date:'2026-11-25',venue:'home'}]}
+
+  host: '919837071785',
+
+  venues: {
+    raman: {
+      role: 'Evening function · 23 November',
+      en: 'Shri Raman Vatika',
+      hi: 'श्री रमन वाटिका',
+      addr: 'Kamla Nagar, Agra',
+      addrHi: 'कमला नगर, आगरा',
+      q: 'Shri Raman Vatika, Kamla Nagar, Agra'
+    },
+
+    ram: {
+      role: 'Wedding venue · विवाह स्थल',
+      en: 'Shri Ram Farm House',
+      hi: 'श्रीराम फार्म हाउस',
+      addr: 'Poiya Ghat Road, Dayalbagh, Agra',
+      addrHi: 'पोईया घाट रोड, दयालबाग, आगरा',
+      q: 'Shri Ram Farm House, Poiya Ghat Road, Dayalbagh, Agra'
+    },
+
+    home: {
+      role: 'Family residence · निज निवास',
+      en: 'Nij Nivas',
+      hi: 'निज निवास',
+      addr: '5, Basant Awas, Mughal Road, Agra',
+      addrHi: '5, बसन्त आवास, मुगल रोड, आगरा',
+      q: '5 Basant Awas, Mughal Road, Agra'
+    }
+  },
+
+  days: [
+    {
+      d: '23',
+      dow: 'Monday',
+      date: '2026-11-23',
+      dowHi: 'सोमवार, 23 नवम्बर 2026',
+
+      events: [
+        {
+          id: 'haldi',
+          en: 'Haldi & Mehndi Ceremony',
+          hi: 'हल्दी और मेंहदी समारोह',
+          time: '10:00 AM – 2:00 PM',
+          hiTime: 'प्रातः 10 से 2 बजे तक',
+          s: '2026-11-23T10:00:00+05:30',
+          e: '2026-11-23T14:00:00+05:30',
+          venue: null,
+
+          imgs: [
+            {
+              f: 'haldi_mehendi.jpeg',
+              w: 1024,
+              h: 1536,
+              alt: 'Invitation card for the Haldi and Mehndi ceremony on 23 November 2026, with Falguni in a lilac outfit among marigold garlands'
+            }
+          ]
+        },
+
+        {
+          id: 'anniv',
+          note: true,
+
+          imgs: [
+            {
+              f: 'GoldenJubilee1.jpeg',
+              w: 853,
+              h: 1280,
+              alt: 'Golden Jubilee save-the-date card for Mukesh and Sheela Chaturvedi, celebrating fifty years of togetherness on 23 November 2026'
+            }
+          ]
+        },
+
+        {
+          id: 'sangeet',
+          en: 'Mahila Sangeet & Preetibhoj',
+          hi: 'महिला संगीत एवं प्रीतिभोज',
+          time: '6:00 PM',
+          hiTime: 'सायं 6.00 बजे',
+          s: '2026-11-23T18:00:00+05:30',
+          venue: 'raman',
+
+          imgs: [
+            {
+              f: 'mahila_sangeet.png',
+              w: 1143,
+              h: 2048,
+              alt: 'Mahila Sangeet and Preetibhoj invitation card for 23 November 2026 at 6:00 PM at Shri Raman Vatika, Kamla Nagar, Agra'
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      d: '24',
+      dow: 'Tuesday',
+      date: '2026-11-24',
+      dowHi: 'मंगलवार, 24 नवम्बर 2026',
+
+      events: [
+        {
+          id: 'baraat',
+          en: 'Swagat Baraat & Preetibhoj',
+          hi: 'स्वागत बारात एवं प्रीतिभोज',
+          time: '7:00 PM',
+          hiTime: 'सायं 7.00 बजे',
+          s: '2026-11-24T19:00:00+05:30',
+          venue: 'ram',
+
+          imgs: [
+            {
+              f: 'Swagat Baraat & Preetibhoj1.png',
+              w: 1024,
+              h: 1536,
+              alt: 'Hindi wedding invitation card dated 24 November 2026, with Falguni and Abhijaat in front of the Taj Mahal'
+            },
+            {
+              f: 'wedding.jpeg',
+              w: 853,
+              h: 1280,
+              alt: 'Save the Date card for 24 November 2026: Falguni weds Abhijaat'
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      d: '25',
+      dow: 'Wednesday',
+      date: '2026-11-25',
+      dowHi: 'बुधवार, 25 नवम्बर 2026',
+
+      events: [
+        
+        {
+          id: 'palkein',
+          en: 'Bheegi Palkein',
+          hi: 'भीगी पलकें',
+          sub: 'फेरे एवं विदा',
+          time: 'Morning · time not specified on the card',
+          hiTime: 'प्रातः बेला',
+          allDay: true,
+          date: '2026-11-25',
+          venue: 'home',
+
+          imgs: [
+            {
+              f: 'Bheegi Palkein.png',
+              alt: 'Bheegi Palkein invitation card for Wednesday, 25 November 2026, at Nij Nivas, 5 Basant Awas, Mughal Road, Agra'
+            }
+          ]
+        }
+
+      ]
+    }
   ]
 };
+
+
 const $=(s,r=document)=>r.querySelector(s);
 const mapUrl=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
 const url=location.href.split('#')[0];
@@ -317,31 +579,112 @@ function gcal(ev){
 /* ---------- Programme ---------- */
 const tabs=$('.tabs'),panel=$('#panel');
 const evIndex={};CFG.days.forEach(d=>d.events.forEach(e=>evIndex[e.id]=e));
+const fileUrl=f=>'img/'+encodeURIComponent(f);
+function pics(e){
+  if(!e.imgs)return '';
+  return '<div class="evimgs">'+e.imgs.map(m=>'<a class="evimg" href="'+fileUrl(m.f)+'" target="_blank" rel="noopener" title="Open full-size card"><img src="'+fileUrl(m.f)+'" width="'+m.w+'" height="'+m.h+'" alt="'+m.alt+'" loading="lazy" decoding="async"></a>').join('')+'</div>';
+}
+
 function render(i){
   const day=CFG.days[i];
-  [...tabs.children].forEach((t,j)=>{t.setAttribute('aria-selected',j===i);t.tabIndex=j===i?0:-1});
+  if(!day)return;
+
+  [...tabs.children].forEach((tab,j)=>{
+    tab.setAttribute('aria-selected',String(j===i));
+    tab.tabIndex=j===i?0:-1;
+  });
   panel.setAttribute('aria-labelledby','tab'+i);
-  panel.innerHTML='<p class="hi" style="text-align:center;color:var(--soft);margin:0 0 14px">'+day.dowHi+'</p>'+day.events.map(e=>{
-    if(e.note)return '<div class="card ev anniv"><p class="eyebrow" style="margin:0">Celebration</p><p class="tag">50th Wedding Anniversary Celebration</p><p class="hi big" style="margin:0">श्री मुकेश कुमार चतुर्वेदी एवं श्रीमती शीला चतुर्वेदी</p></div>';
+
+  const eventHtml=day.events.map(e=>{
+    if(e.note){
+      return '<div class="card ev anniv'+
+        (e.imgs?' has-img':'')+
+        (e.imgs&&e.imgs.length>1?' multi':'')+'">'+
+        '<div class="evtxt"><p class="eyebrow" style="margin:0">Celebration</p>'+
+        '<p class="tag">50th Wedding Anniversary Celebration</p>'+
+        '<p class="hi big" style="margin:0">श्री मुकेश कुमार चतुर्वेदी एवं श्रीमती शीला चतुर्वेदी</p></div>'+
+        pics(e)+'</div>';
+    }
+
     const v=e.venue?CFG.venues[e.venue]:null;
-    return '<div class="card ev"><h3>'+e.en.replace('&','&amp;')+'</h3><p class="hi">'+e.hi+'</p><p class="when">'+e.time+' <span class="hi" style="color:var(--soft)">· '+e.hiTime+'</span></p>'
-     +(v?'<p style="margin:0">📍 <b>'+v.en+'</b>, '+v.addr+'</p>':'<p style="margin:0;color:var(--soft)">Venue not stated on the invitation.</p>')
-     +'<div class="row">'+(v?'<a class="btn" target="_blank" rel="noopener" href="'+mapUrl(v.q)+'">Get Directions</a>':'')
-     +'<button class="btn" type="button" data-ics="'+e.id+'">Add to Calendar (.ics)</button><a class="btn" target="_blank" rel="noopener" href="'+gcal(e)+'">Google Calendar</a></div></div>';
+    const cls='card ev'+(e.imgs?' has-img':'')+
+      (e.imgs&&e.imgs.length>1?' multi':'');
+    const title=(e.en||e.id).replace(/&/g,'&amp;');
+
+    const when=e.allDay
+      ?e.time
+      :(e.time+' <span class="hi" style="color:var(--soft)">· '+
+        (e.hiTime||'')+'</span>');
+
+    const venueHtml=v
+      ?'<p style="margin:0">📍 <b>'+v.en+'</b>, '+v.addr+'</p>'+
+       '<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+
+       mapUrl(v.q)+'">Get Directions</a></div>'
+      :'<p style="margin:0;color:var(--soft)">📍 Shri Raman Vatika, Kamla Nagar, Agra</p>';
+
+    const calendarHtml=
+      '<div class="row">'+
+      '<button class="btn" type="button" data-ics="'+e.id+'">Download Calendar File</button>'+
+      '<a class="btn" target="_blank" rel="noopener" href="'+gcal(e)+'">Add to Google Calendar</a>'+
+      '</div>';
+
+    return '<div class="'+cls+'"><div class="evtxt">'+
+      '<h3>'+title+'</h3><p class="hi">'+(e.hi||'')+'</p>'+ 
+      (e.sub?'<p class="hi" style="margin:0;color:var(--gold);font-size:1rem">'+e.sub+'</p>':'')+ 
+      '<p class="when">'+when+'</p>'+
+      venueHtml+calendarHtml+'</div>'+pics(e)+'</div>';
   }).join('');
+
+  panel.innerHTML=
+    '<p class="hi" style="text-align:center;color:var(--soft);margin:0 0 14px">'+
+    day.dowHi+'</p>'+eventHtml;
 }
-CFG.days.forEach((d,i)=>{
-  const b=document.createElement('button');b.className='tab';b.type='button';b.id='tab'+i;b.setAttribute('role','tab');
-  b.innerHTML='<b>'+d.d+'</b><small>'+d.dow.slice(0,3)+' · Nov</small>';
-  b.onclick=()=>render(i);
-  b.onkeydown=e=>{let n=i;if(e.key==='ArrowRight')n=(i+1)%3;else if(e.key==='ArrowLeft')n=(i+2)%3;else return;e.preventDefault();render(n);tabs.children[n].focus()};
+
+// Create each day tab once.
+CFG.days.forEach((day,i)=>{
+  const b=document.createElement('button');
+  b.className='tab';
+  b.type='button';
+  b.id='tab'+i;
+  b.setAttribute('role','tab');
+  b.setAttribute('aria-controls','panel');
+  b.innerHTML='<b>'+day.d+'</b><small>'+day.dow.slice(0,3)+' · Nov</small>';
+
+  b.addEventListener('click',()=>render(i));
+
+  b.addEventListener('keydown',e=>{
+    let next=i;
+
+    if(e.key==='ArrowRight')
+      next=(i+1)%CFG.days.length;
+    else if(e.key==='ArrowLeft')
+      next=(i+CFG.days.length-1)%CFG.days.length;
+    else
+      return;
+
+    e.preventDefault();
+    render(next);
+    tabs.children[next].focus();
+  });
+
   tabs.appendChild(b);
 });
-panel.addEventListener('click',e=>{const b=e.target.closest('[data-ics]');if(b)dl(evIndex[b.dataset.ics])});
+
+// Download calendar files when their buttons are clicked.
+panel.addEventListener('click',e=>{
+  const b=e.target.closest('[data-ics]');
+
+  if(b){
+    const ev=evIndex[b.dataset.ics];
+    if(ev)dl(ev);
+  }
+});
+
 render(0);
 
+
 /* ---------- Venues ---------- */
-$('#vg').innerHTML=Object.values(CFG.venues).map(v=>'<div class="card venue"><div class="role">'+v.role+'</div><h3>'+v.en+'</h3><p class="hi">'+v.hi+'</p><p>'+v.addr+'<br><span class="hi">'+v.addrHi+'</span></p><a class="btn fill" target="_blank" rel="noopener" href="'+mapUrl(v.q)+'">Get Directions</a></div>').join('');
+$('#vg').innerHTML=Object.values(CFG.venues).map(v=>'<div class="card venue"><div class="role">'+v.role.replace(/\d{1,2} November/,'<span class="date">$&</span>')+'</div><h3>'+v.en+'</h3><p class="hi">'+v.hi+'</p><p>'+v.addr+'<br><span class="hi">'+v.addrHi+'</span></p><a class="btn fill" target="_blank" rel="noopener" href="'+mapUrl(v.q)+'">Get Directions</a></div>').join('');
 
 /* ---------- Countdown ---------- */
 const target=new Date(CFG.countdown.iso).getTime(),els={d:$('#d'),h:$('#h'),m:$('#m'),s:$('#s')};
@@ -378,6 +721,7 @@ $('#rsvpf').addEventListener('submit',e=>{
   const text='RSVP – Falguni & Abhijaat wedding\nName: '+n+'\nResponse: '+a+'\nGuests: '+c+($('#rm').value.trim()?'\nMessage: '+$('#rm').value.trim():'');
   window.open('https://wa.me/'+CFG.host+'?text='+encodeURIComponent(text),'_blank','noopener');
   $('#rok').textContent='WhatsApp should now be open. Please press send there — your RSVP is not recorded until you do.';
+  Floral.rsvp();Sound.confirm();
   setTimeout(()=>{btn.disabled=false},6000);
 });
 
@@ -386,6 +730,7 @@ const cover=$('#cover'),reduce=matchMedia('(prefers-reduced-motion:reduce)').mat
 const dots=$('.dots');for(let i=0;i<14;i++){const s=document.createElement('span');s.style.left=(Math.random()*100)+'%';s.style.animationDelay=(-Math.random()*9)+'s';s.style.animationDuration=(7+Math.random()*7)+'s';dots.appendChild(s)}
 function openInv(){
   try{sessionStorage.setItem('opened','1')}catch{}
+  Floral.hero();Sound.open();
   if(reduce){cover.classList.add('gone');return}
   cover.classList.add('open');setTimeout(()=>cover.classList.add('gone'),1050);
 }
@@ -393,6 +738,98 @@ try{if(sessionStorage.getItem('opened')){cover.classList.add('gone')}}catch{}
 $('#open').onclick=openInv;$('#skip').onclick=()=>cover.classList.add('gone');
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cover.classList.add('gone')});
 if(!cover.classList.contains('gone'))$('#open').focus();
+
+/* ---------- Floral petals: hero + RSVP layers only, never site-wide ---------- */
+const Floral=(()=>{
+  const KINDS=['p c1','p c1','p c2','p c2','p c3','p c4','p c5','b b1','b b2'];
+  const calm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const timers=new Map();                       // layer -> its one clean-up timer
+  const wipe=l=>{l.textContent=''};
+  function make(o,still){
+    const k=KINDS[Math.floor(Math.random()*KINDS.length)],blossom=k[0]==='b',s=blossom?rnd(14,24):rnd(9,17);
+    const el=document.createElement('span'),st=el.style;
+    el.className='pt '+(still?'still ':'')+k;
+    st.setProperty('--x',rnd(0,94).toFixed(1)+'%');
+    st.setProperty('--s',s.toFixed(1)+'px');
+    st.setProperty('--h',(blossom?s:s*1.4).toFixed(1)+'px');
+    st.setProperty('--o',rnd(o.alpha[0],o.alpha[1]).toFixed(2));
+    st.setProperty('--r0',Math.round(rnd(0,360))+'deg');
+    el.appendChild(document.createElement('i'));
+    if(still){st.setProperty('--y',rnd(4,80).toFixed(1)+'%');return el}
+    st.setProperty('--dur',rnd(o.dur[0],o.dur[1]).toFixed(2)+'s');
+    st.setProperty('--dl',(o.delay+rnd(0,o.spread)).toFixed(2)+'s');
+    st.setProperty('--dx',Math.round(rnd(-70,70))+'px');
+    st.setProperty('--sw',Math.round(rnd(8,22))+'px');
+    st.setProperty('--rs',Math.round(rnd(120,300)*(Math.random()<.5?-1:1))+'deg');
+    st.setProperty('--fl',rnd(1.8,3.4).toFixed(2)+'s');
+    const done=e=>{if(e.target!==el)return;el.removeEventListener('animationend',done);el.remove()};
+    el.addEventListener('animationend',done);
+    return el;
+  }
+  function burst(id,o){
+    try{
+      const layer=document.getElementById(id);
+      if(!layer||layer.firstChild)return;       // one burst at a time per layer
+      const still=calm(),n=still?8:(innerWidth<600?Math.round(o.n*.6):o.n),frag=document.createDocumentFragment();
+      layer.style.setProperty('--fall',((layer.clientHeight||600)+80)+'px');
+      for(let i=0;i<n;i++)frag.appendChild(make(o,still));
+      layer.appendChild(frag);
+      clearTimeout(timers.get(layer));
+      timers.set(layer,setTimeout(()=>{wipe(layer);timers.delete(layer)},still?3500:(o.dur[1]+o.delay+o.spread)*1000+800));
+    }catch(e){}
+  }
+  addEventListener('pagehide',()=>{timers.forEach((t,l)=>{clearTimeout(t);wipe(l)});timers.clear()});
+  return{
+    hero:()=>burst('petalsHero',{n:26,dur:[6.5,10.5],delay:.35,spread:2.8,alpha:[.55,.95]}),
+    rsvp:()=>burst('petalsRsvp',{n:12,dur:[5,8],delay:0,spread:1.6,alpha:[.4,.7]})
+  };
+})();
+
+/* ---------- Sound: optional, muted by default, Web Audio tones only (no audio files) ---------- */
+const Sound=(()=>{
+  const none={open(){},confirm(){}},btn=document.getElementById('snd'),AC=window.AudioContext||window.webkitAudioContext;
+  if(!btn)return none;
+  if(!AC){btn.hidden=true;return none}
+  let ctx=null,master=null,on=false,opened=false,lastConfirm=0;
+  const tone=(f,t,dur,vol)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.05);
+    o.onended=()=>{o.disconnect();g.disconnect()};
+  };
+  const bell=(f,t,dur,vol)=>{tone(f,t,dur,vol);tone(f*2.76,t,dur*.45,vol*.25);tone(f*5.4,t,dur*.2,vol*.08)};
+  const play=fn=>{if(!on||!ctx)return;try{if(ctx.state==='suspended')ctx.resume().catch(()=>{});fn(ctx.currentTime+.03)}catch(e){}};
+  btn.addEventListener('click',()=>{
+    try{
+      if(!on){
+        if(!ctx){ctx=new AC();master=ctx.createGain();master.connect(ctx.destination)}
+        on=true;master.gain.cancelScheduledValues(0);master.gain.value=1;
+        ctx.resume().catch(()=>{});
+        play(t=>bell(1318.5,t,.8,.04));        // tiny "yes, sound works" blip
+      }else{
+        on=false;master.gain.cancelScheduledValues(0);master.gain.setTargetAtTime(0,ctx.currentTime,.02);
+      }
+    }catch(e){on=false;btn.hidden=true;return}
+    btn.setAttribute('aria-pressed',on);btn.title=on?'Turn sound off':'Turn sound on';
+    btn.querySelector('.snd-i').textContent=on?'🔔':'🔇';
+    toast(on?'Sound on':'Sound off');
+  });
+  return{
+    open(){play(t=>{if(opened)return;opened=true;[1046.5,1318.5,1568,2093].forEach((f,i)=>bell(f,t+i*.11,1.5,.05));[2349,2637,3136,3520].forEach((f,i)=>tone(f,t+.55+i*.18,.35,.012))})},
+    confirm(){const n=Date.now();if(n-lastConfirm<6000)return;play(t=>{lastConfirm=n;bell(784,t,.8,.05);bell(1046.5,t+.16,1,.05)})}
+  };
+})();
+
+/* ---------- Collage: new arrangement on every page load ---------- */
+(()=>{
+  const c=$('#collage');if(!c)return;
+  const figs=[...c.children];
+  for(let i=figs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[figs[i],figs[j]]=[figs[j],figs[i]]}
+  figs.forEach(f=>{c.appendChild(f);f.style.setProperty('--r',(Math.random()*4-2).toFixed(2)+'deg');f.style.setProperty('--y',Math.round(Math.random()*16)+'px')});
+  c.dataset.layout=1+Math.floor(Math.random()*3);
+})();
 
 /* ---------- Reveal ---------- */
 const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.1}):null;
